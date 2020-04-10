@@ -1,0 +1,57 @@
+<!-- <script src="http://www.baidu.com&callback=jsonp"></script> -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  <div style="height: 2000px;width: 100px;">
+    <img class="img" src="gif-0.webp" alt="">
+  </div>
+</body>
+</html>
+<script>
+  // 防抖，只要用户不停止触发的动作，事件就一直不触发，比如滚动条滚动，要等滚动停止一定时间后再执行事件
+  function debounce(fn, delay) {
+    let timer = null;
+    return function() {
+      // 如果已经存在一个定时器，则取消这个定时器
+      if(timer) {
+        clearTimeout(timer);
+      }
+      // 并重新根据最新的动作时间，重新设置定时器，在delay时间过后，再执行事件fn
+      timer = setTimeout(fn, delay);
+    }
+  }
+
+  // 节流，在一定时间内，不管用户触发动作几次，事件都只执行一次
+  function throttle(fn, delay) {
+    debugger;
+    // 是否在执行
+    let isExecuting = false;
+    return function() {
+      // 如果在执行，则什么都不做
+      if(isExecuting) {
+        return;
+        // 如果空闲的，则设置定时器
+      }else {
+        // 改状态为执行中
+        isExecuting = true;
+        setTimeout(() => {
+          fn();
+          isExecuting = false;
+        }, delay)
+      }
+     
+    }
+  }
+
+  function showTop () {
+    var scrollTop = document.body.scrollTop || document.documentElement.scrollTop;
+    console.log('滚动条位置：' + scrollTop);
+  }
+  window.onscroll = debounce(showTop, 1000);
+</script>

@@ -1,0 +1,97 @@
+<div class="wraper">
+  <ul>
+    <li>1</li>
+    <li>2</li>
+    <li>3</li>
+    <li>4</li>
+    <li>5</li>
+    <li>6</li>
+    <li>7</li>
+    <li>8</li>
+    <li>9</li>
+    <li>10</li>
+  </ul>
+</div>
+<p>这是一行文本，鼠标点击改变颜色</p>
+
+<script>
+  p = document.getElementsByTagName('p')[0];
+  p.onmousedown = function () {
+    this.style.color = 'red';
+  }
+  p.onmouseup = function () {
+    this.style.color = 'green';
+  }
+  p.oncontextmenu = function () {
+      console.log('a');
+    }
+  p.addEventListener('click', function () {
+      console.log('a');
+      console.log(this);      //div元素本身
+    }, false)
+  p.addEventListener('click', function () {
+    console.log('b');
+  })
+</script>
+<script>
+  // 原来使用循环遍历的方法
+  // liList = document.getElementsByTagName('li');
+  // console.log(liList);
+  // len = liList.length;
+  // console.log(len);
+  // for (var i = 0; i < len - 1; i++) {
+  //   liList[i].onclick = function () {
+  //     console.log(this.innerText);
+  //   }
+  // }
+  //有多少个li，就要遍历多少个增加事件
+  //如果后面动态加li，那么又得重写for循环加事件
+
+
+  // 利用事件冒泡和事件源对象优化,li.onclick会默认冒泡到ul上
+  var ul = document.getElementsByTagName('ul')[0];
+  ul.onclick = function (e) {
+    //兼容IE
+    var event = e || window.event;
+    //兼容火狐和IE
+    var target = e.target || e.srcElement;
+    console.log(target.innerText);
+  }
+</script>
+
+
+
+
+<html>
+  <body>
+    <div class="parent" style="height: 100px;width: 100px;background: red;">parent
+      <p class="child" style="height: 50px;width: 50px;background: yellow;">child</p>
+    </div>
+  </body>
+  <script>
+    var parent = document.getElementsByClassName('parent')[0];
+    var child = document.getElementsByClassName('child')[0];
+    // 冒泡
+    document.addEventListener('click', function() {
+      console.log('冒泡：点击document')
+    }, false)
+    parent.addEventListener('click', function (e) {
+        console.log('冒泡：点击parent')
+        console.log(e.target);  // 点击child，可以看出，触发对象还是子元素，>>> <p class="child" style="height: 50px;width: 50px;background: yellow;">child</p>
+      }, false)
+    child.addEventListener('click', function () {
+        console.log('冒泡：点击child')
+      }, false)
+
+    // 捕获
+    document.addEventListener('click', function () {
+        console.log('捕获：点击document')
+      }, true)
+      parent.addEventListener('click', function () {
+        console.log('捕获：点击parent')
+      }, true)
+      child.addEventListener('click', function () {
+        console.log('捕获：点击child')
+      }, true)
+  </script>
+</html>
