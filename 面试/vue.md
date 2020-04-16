@@ -82,6 +82,31 @@
   }
 ```
 7. 当需要在数据变化时执行异步或开销较大的操作时，这个方式是最有用的。这是和computed最大的区别，请勿滥用。
-参考：
-computed: https://segmentfault.com/a/1190000020156646
+
+**参考：**
+>computed: https://segmentfault.com/a/1190000020156646
 watched和computed区别: https://www.cnblogs.com/jiajialove/p/11327945.html
+
+## v-if 和 v-show的区别
+1.共同点
+  都是动态显示DOM元素
+
+2.区别
+  v-if 的初始化较快，但切换代价高；v-show 初始化慢，但切换成本低
+（1）手段：  
+    v-if是动态的向DOM树内添加或者删除DOM元素；
+    v-show是通过设置DOM元素的display样式属性控制显隐；
+（2）编译过程：  
+    v-if切换有一个局部编译/卸载的过程，切换过程中合适地销毁和重建内部的事件监听和子组件；
+    v-show只是简单的基于css切换；
+（3）编译条件：  
+    v-if是惰性的，如果初始条件为假，则什么也不做；只有在条件第一次变为真时才开始局部编译（编译被缓存？编译被缓存后，然后再切换的时候进行局部卸载);   
+    v-show是在任何条件下（首次条件是否为真）都被编译，然后被缓存，而且DOM元素保留；
+（4）性能消耗：  
+    v-if有更高的切换消耗；
+    v-show有更高的初始渲染消耗；
+（5）使用场景：  
+    v-if适合运营条件不大可能改变；
+    v-show适合频繁切换。
+  
+>https://blog.csdn.net/ning0_o/article/details/56006528
