@@ -5,15 +5,51 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Document</title>
+  <style>
+    .wrapper {
+      height: 100px;
+      width: 100px;
+      overflow: hidden;
+      
+    }
+    .overflow-wrapper {
+      height: 500px;
+      background: red;
+      transition: all 4000ms ease;
+    }
+    .overflow-wrapper:hover {
+      transform: translateY(-300px);
+    }
+    .yellow, .red, .blue, .green {
+      height: 100px;
+      width: 100px;
+    }
+    .yellow {
+      background: yellow;
+    }
+    .blue {
+    background: blue
+    }
+    .green {
+    background: green;
+    }
+    .red {
+    background: red;
+    }
+  </style>
 </head>
 <body>
   <h1>hello world!</h1>
+  <div class="wrapper">
+    <div class="overflow-wrapper">
+      <div class="red"></div>
+      <div class="yellow"></div>
+      <div class="green"></div>
+      <div class="blue"></div>
+    </div>
+  </div>
   <script>
-    var data = []
-    setTimeout(function(){
-      data.push(1)
-    },2000)
-    console.log(data)
+    
   </script>
 </body>
 </html>
