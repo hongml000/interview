@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>dom事件</title>
+  <style>
+    #tar {
+      width: 100px;
+      height: 100px;
+      background: yellow;
+    }
+  </style>
+</head>
+<body>
+  <div id="tar">目标元素</div>
+  <script>
+    var target = document.getElementById("tar")
+    // 第三个参数默认为false，表示使用冒泡，这里要演示捕获，所以为true
+    window.addEventListener('click', function(){
+      console.log('window capture')
+    },true)
+    document.documentElement.addEventListener('click', function(){
+      console.log('html capture')
+    },true)
+    document.body.addEventListener('click', function(){
+      console.log('body capture')
+    },true)
+    document.addEventListener('click', function(){
+      console.log('document capture')
+    },true)
+    target.addEventListener('click', function(){
+      console.log('target capture')
+    },true)
+    // >>> 
+    // window capture
+    // document capture
+    // html capture
+    // body capture
+    // target capture
+
+    // >>>，如果将true改为false，则冒泡，冒泡顺序相反，是自下而上的
+    // target capture
+    // body capture
+    // html capture
+    // document capture
+    // window capture
+  </script>
+</body>
+</html>

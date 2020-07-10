@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>原型链</title>
+</head>
+<body>
+  <script>
+    // 字面量
+    var o1 = {name: "o1"}
+    var o2 = new Object({name: "o2"}) // 实际为构造函数,但结果同上面
+    // 构造函数
+    var M = function(name){this.name = name}
+    var o3 = new M("hhh")
+    // object.create方式
+    var p = {name: "p"}
+    var o4 = Object.create(p)  // Object.create创建的对象是用原型链来链接的，所以o4本身是{}，它是
+    o4.__proto__ === p // true
+    // >>>o1
+    // {name: "o1"} 
+    // >>>o2
+    // {name: "o2"}
+    // >>>o3
+    // M {name: "hhh"}
+    // >>>o4
+    // {}
+    // >>>o4.name
+    // "p"
+   
+
+
+    // 实现一个new方法 
+    var new2 = function(func) {
+      var o = Object.create(func.prototype)
+      var k = func.call(o)
+      if(typeof k === 'object') {
+        return k
+      }else {
+        return o
+      }
+    }
+  </script>
+</body>
+</html>

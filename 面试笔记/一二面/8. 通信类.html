@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>通信类</title>
+</head>
+<body>
+  <script>
+    // WebSocket客户端
+    // 判断兼容性，WebSocket是h5出的特性，ie10以上才支持
+    var ws = WebSocket ? new WebSocket('ws://localhost:9000') : ""
+
+    if(ws) {
+      ws.onopen = function() {  
+          console.log("b open");
+          ws.send("b hello");
+        };
+      ws.onmessage = function(evt) {
+        console.log(evt.data)
+      };
+
+      ws.onclose = function(evt) {
+        console.log("b WebSocketClosed!");
+      };
+      ws.onerror = function(evt) {
+        console.log("WebSocketError!");
+      };
+    }
+  </script>
+</body>
+</html>

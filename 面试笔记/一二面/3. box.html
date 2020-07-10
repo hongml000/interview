@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>box-sizing</title>
+  <style>
+    html * {
+      margin: 0;
+      padding: 0;
+    }
+    /* bfc边距例子，如果父级不加overflow:hidden属性，父级高度为100px，不包括子元素的margin
+       如果给父级加上，即创建了一个bfc，则父级高度为110px，子元素的margin参与高度计算
+     */
+    .father {
+      background: red;
+      overflow: hidden;
+    }
+    .child {
+      height: 100px;
+      margin-top:10px;
+      background: yellow;
+    }
+    /* 
+      BFC解决边距重叠问题：
+      如果不加任何bfc，会发现子元素间，上下间距会重叠，即p1和p2间距为25px
+      如果给p2加一个父元素，并设为bfc，则p1和p2间距为30px
+     */
+    .bfc {
+      background: grey;
+      /* 加这个属性，即创建bfc，子元素的margin也参与高度计算，
+          如果不加，则最外层子元素的垂直margin不会参与高度计算 
+      */
+      overflow: hidden; 
+    }
+    .bfc p {
+      background: greenyellow;
+      margin: 25px auto;
+    }
+    .p2 {
+      overflow: hidden;
+    }
+
+    /* 
+      布局时利用BFC不与float重叠
+      如果不使用BFC，右侧布局部分将会侵染左边float下边
+      在右部分使用BFC后，将不会侵染左边，左边下面部分由背影色填充
+     */
+    .layout {
+      background: paleturquoise;
+      /* 注意，加在这是没有用的 */
+      /* overflow: auto; */
+    }
+    .layout .left {
+      width: 100px;
+      height: 100px;
+      float:left;
+      background:peachpuff;
+    }
+    .layout .right {
+      background: papayawhip;
+      height: 200px;
+      /* 要加在这 */
+      overflow: auto;
+    }
+
+    /* 需要清除浮动的父元素 */
+    .float-father {
+      background:pink;
+      /* 如果不清除浮动，浮动元素的高度并没有参与计算，父元素高度为0 */
+      overflow: auto; 
+    }
+    .float-father .float {
+      float: left;
+      height: 100px;
+      background: yellow;
+    }
+    /* .tt {
+      background: darkgoldenrod;
+    } */
+  </style>
+</head>
+<body>
+  <!-- 父级计算边距问题 -->
+  <section class="father">
+    <article class="child"></article>
+  </section>
+
+  <!-- bfc解决边距重叠 -->
+  <section class="bfc">
+    <p>1</p>
+    <div class="p2">
+      <p>2</p>
+    </div>
+    <p>3</p>
+  </section>
+
+  <!-- 布局时利用BFC不与float重叠特性 -->
+  <section class="layout">
+    <div class="left">左边布局</div>
+    <div class="right">右边布局</div>
+  </section>
+
+<!-- 清除浮动 -->
+  <section class="float-father">
+    <div class="float">浮动元素</div>
+    <!-- <div class="tt">其它元素</div> -->
+  </section>
+</body>
+</html>

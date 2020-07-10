@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>面向对象</title>
+</head>
+<body>
+  <script>
+    // 类的声明
+    function Animal(name){
+      this.name = name
+    }
+    // ES6声明类
+    class Animal2 {
+      constructor(name) {
+        this.name = name
+      }
+    }
+    // 实例化方法是一样的
+    var mao = new Animal("miao")
+    var wang = new Animal2("wang")  // 如果没有参数，括号可以不要
+
+    // 1. 借助构造函数继承
+    function Parent1() {
+      this.name = 'parent1'
+    }
+    Parent1.prototype.say = function() {
+      console.log('hello')
+    }
+    Parent1.prototype.age = 18
+    function Child1() {
+      Parent1.call(this)  // 将父级的构造函数的this指向当前child对象
+      this.type = 'child1'
+    }
+    // console.log(new Child1)
+    const child1 = new Child1
+    console.log("构造函数：", child1) // {name: "parent1", type: "child1"}，没有say和age属性
+    // 缺点：只支持部分继承，无法继承父类的原型对象上的属性和方法 
+  
+    // 2. 借助原型链实现继承
+    function Parent2() {
+      this.name = 'Parent2'
+      this.play = [1, 2, 3]
+    }
+    function Child2() {
+      this.type = 'child2'
+    }
+    // new Child2().__proto__ = Child2.prototype
+    // Child2.prototype = new Parent2()
+    // new Parent2().__proto__ = Parent2.prototype
+    Child2.prototype = new Parent2(); 
+    const child21 = new Child2()
+    const child22 = new Child2()
+    child21.play.push(4)
+    console.log(child21.play) // [1,2,3,4]
+    console.log(child22.play) // [1,2,3,4]
+    // 缺点：当修改其中一个实例对象的引用对象时，另一个实例对象的引用对象值也跟着改变，因为他们指向的是同一个原型对象
+
+    // 3. 组合方式
+    function Parent3() {
+      this.name = "parent3"
+      this.play = [1,2,3]
+    }
+    function Child3() {
+      Parent3.call(this)  // 父构造函数执行1次
+      this.type = 'child3'
+    }
+    Child3.prototype = new Parent3()  // 执行2次
+    const child31 = new Child3()
+    const child32 = new Child3()
+    child31.play.push(4)
+    console.log("child3:", child31)
+    console.log(child31.play) // [1,2,3,4]
+    console.log(child32.play) // [1,2,3]
+    // 缺点： 父构造函数执行2次，没有必要
+
+    // 4. 组合方式的优化1
+    function Parent4() {
+      this.name = "parent4"
+      this.play = [1,2,3]
+    }
+    function Child4() {
+      Parent4.call(this)  
+      this.type = 'child4'
+    }
+    Child4.prototype = Parent4.prototype
+    const child41 = new Child4()
+    const child42 = new Child4()
+    child41.play.push(4)
+
+    console.log(child41.play) // [1,2,3,4]
+    console.log(child42.play) // [1,2,3]
+    console.log("child41:", child41.__proto__.constructor === Child4) // false
+    console.log(child41 instanceof Child4)  // true
+    console.log(child41.__proto__.constructor === Parent4) // true
+    // 缺点：无法通过constructor确认实例是哪个父类构造函数生成的
+
+    // 5. 组合方式的优化2
+    function Parent5() {
+      this.name = "parent5"
+      this.play = [1,2,3]
+    }
+    function Child5() {
+      Parent5.call(this)  
+      this.type = 'child5'
+    }
+    Child5.prototype = Object.create(Parent5.prototype)
+    Child5.prototype.constructor = Child5
+    const child51 = new Child5()
+    const child52 = new Child5()
+    child51.play.push(4)
+
+    console.log(child51.play) // [1,2,3,4]
+    console.log(child52.play) // [1,2,3]
+    console.log("child5:", child51)
+    console.log(child51.__proto__)
+    console.log(child51.__proto__.constructor === Parent5)  // false
+    console.log(child51.__proto__.constructor === Child5)  // true
+  </script>
+</body>
+</html>
