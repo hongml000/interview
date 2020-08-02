@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+    // 2. 捕获错误,注意要放在引入文件前
+    window.addEventListener('error', function(e) {
+      console.log("捕获错误2：", e);
+      (new Image()).src = "http://baidu.com/test?keyword=xxxx";
+    },true)
+    // >>>
+    // GET file://baidu.com.cn/test.js net::ERR_FILE_NOT_FOUND catchError.html:12 
+    // 捕获错误： Event {isTrusted: true, type: "error", target: script, currentTarget: Window, eventPhase: 1, …}
+  </script>
+
+  <!-- 引入一个不存在的文件资源 -->
+  <script id="test" src="//baidu.com.cn/test.js" charset="utf-8"></script>
+  
+  <!-- <script>
+    // 1. 捕获错误,在对象上绑定error方法
+    const st = document.getElementById("test")
+    window.onerror(function(e) {
+      console.log("捕获错误1：", e)
+    })
+    
+  </script> -->
+</body>
+</html>
