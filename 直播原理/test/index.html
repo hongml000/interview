@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>video详解</title>
+</head>
+<body>
+  
+  <!-- 注意，要加controls属性，否则不会进行播放 -->
+  <!-- <video src="./test.mp4" controls></video> -->
+  <!-- 如果要去掉原生的下载和全屏功能 -->
+  <!-- <video src="./test.mp4" controls="controls" width="400px" height="400px" controlslist="nodownload nofullscreen" loop></video> -->
+  <!-- 控制音量，直接修改volume属性是不生效的，必须用js去修改 -->
+  <!-- <video src="./test.mp4" id="testVideo" controls volume="0.5"></video> -->
+
+  <!-- 控制播放时间，直接修改volume属性是不生效的，必须用js去修改 -->
+  <!-- <video src="./test.mp4" id="testVideo" controls volume="0.5"></video> -->
+  <!-- 切换视频，方法2, 默认播放第1个，当播放异常时，会自动播放另一个 -->
+  <video id="testVideo" controls>
+    <!-- 一般用来，备份视频报错的情况 -->
+    <source src="./test3.mp4" type="video/mp4">
+    <source src="./test4.mp4" type="video/mp4">
+    <source src="./test11.mp4" type="video/mp4">
+  </video>
+    <script>
+    var video = document.getElementById("testVideo")
+    // video.volume = 0.5 // 音量在0-1之间，默认1，最大声
+    // video.currentTime = 5; // 设置当前播放时间，单位s
+    // 切换视频地址
+    // 方法1
+    // setTimeout(function() {
+    //   video.src = "test11.mp4"
+    // }, 3000)
+    console.log("src:", video.src)  // 如果使用source，video的src永远都是空的
+    // 注意，如果是直接打印也是为空的
+    console.log("src1:", video.currentSrc)  // 空的，因为它切换是要时间的
+
+    setTimeout(function() {
+      console.log("src1:", video.currentSrc) // http://localhost:3000/test11.mp4
+      var normalUrl = video.currentSrc
+      const urls = document.getElementsByTagName("source")
+      const len = urls.length
+      var errorUrls = []
+      console.log("sources:", urls)
+      for(let i =0; i< len; i++) {
+        console.log("item:", urls[i])
+        if(urls[i].src === normalUrl) break;
+        else {
+          errorUrls.push(urls[i].src)
+        }
+      }
+      console.log("errorUrls:", errorUrls);
+      (new Image()).src=`http://localhost:3000/error?errorUrls=${errorUrls}`
+    }, 1000)
+    
+  </script>
+</body>
+</html>
