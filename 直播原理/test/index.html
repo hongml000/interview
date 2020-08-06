@@ -16,16 +16,74 @@
   <!-- <video src="./test.mp4" id="testVideo" controls volume="0.5"></video> -->
 
   <!-- 控制播放时间，直接修改volume属性是不生效的，必须用js去修改 -->
-  <!-- <video src="./test.mp4" id="testVideo" controls volume="0.5"></video> -->
+  <video src="./test22.mp4" id="testVideo" controls></video>
   <!-- 切换视频，方法2, 默认播放第1个，当播放异常时，会自动播放另一个 -->
-  <video id="testVideo" controls>
+  <!-- <video id="testVideo" controls> -->
     <!-- 一般用来，备份视频报错的情况 -->
-    <source src="./test3.mp4" type="video/mp4">
-    <source src="./test4.mp4" type="video/mp4">
+    <!-- <source src="./test3.mp4" type="video/mp4">
+    <source src="./test4.mp4" type="video/mp4"> 
     <source src="./test11.mp4" type="video/mp4">
-  </video>
-    <script>
+  </!-->-->
+  <script>
     var video = document.getElementById("testVideo")
+    console.log(video.duration) // 创建video时，初始化时为nan,是拿不到总时长的，必须在加载之后才能拿到
+    video.addEventListener('loadstart', function() {
+      console.log('视频开始加载 loadstart')
+    })
+    // 加载完后，可以拿到总时长；注意，这时长有些格式的视频，并不是一次就拿到总时长的，有可能是变化的
+    video.addEventListener('durationchange', function() {
+      console.log("总时长变化 durationchange:", video.duration)
+    })
+    video.addEventListener('loadedmetadata', function() {
+      console.log("loadedmetadata")
+    })
+    video.addEventListener('loadeddata',function() {
+      console.log("loadeddata")
+    })
+    video.addEventListener('progress', function() {
+      console.log('progress');
+    })
+    // 有帧可以播放
+    video.addEventListener('canplay', function(){
+      console.log('canplay');
+    })
+    // 可以流畅的播放了
+    video.addEventListener('canplaythrough', function() {
+      console.log('canplaythrough')
+    })
+    video.addEventListener('play', function() {
+      console.log('play')
+    })
+    video.addEventListener('pause', function() {
+      console.log('pause');
+    })
+    // 当点击快进，快退时，需要去查找视频点 seeking->seeked->canplay->canplaythrough
+    video.addEventListener('seeking',function(){
+      console.log('seeking');
+    })
+    video.addEventListener('seeked',function(){
+      console.log('seeked')
+    })
+    // waiting 当查找过程（seeking），但还未查找ok（没触发seeked）时，即还没有下载完视频时，这时paly时就会触发waiting事件
+    video.addEventListener('waiting',function(){
+      console.log('waiting')
+    })
+    // palying，当出现watting后，后面再下载完成，seeked后，就会触发canplay->palying->canplaythrough
+    video.addEventListener('palying',function(){
+      console.log('playing');
+    })
+    video.addEventListener('timeupdate',function(){
+      console.log('timeupdate');
+      console.log(video.currentTime)
+    })
+    video.addEventListener('ended',function(){
+      console.log('ended');
+      // 一般用于播放完成时，插入广告
+    })
+    video.addEventListener('error',function(e){
+      console.log('error', e);
+      
+    })
     // video.volume = 0.5 // 音量在0-1之间，默认1，最大声
     // video.currentTime = 5; // 设置当前播放时间，单位s
     // 切换视频地址
@@ -33,27 +91,27 @@
     // setTimeout(function() {
     //   video.src = "test11.mp4"
     // }, 3000)
-    console.log("src:", video.src)  // 如果使用source，video的src永远都是空的
+    // console.log("src:", video.src)  // 如果使用source，video的src永远都是空的
     // 注意，如果是直接打印也是为空的
-    console.log("src1:", video.currentSrc)  // 空的，因为它切换是要时间的
+    // console.log("src1:", video.currentSrc)  // 空的，因为它切换是要时间的
 
-    setTimeout(function() {
-      console.log("src1:", video.currentSrc) // http://localhost:3000/test11.mp4
-      var normalUrl = video.currentSrc
-      const urls = document.getElementsByTagName("source")
-      const len = urls.length
-      var errorUrls = []
-      console.log("sources:", urls)
-      for(let i =0; i< len; i++) {
-        console.log("item:", urls[i])
-        if(urls[i].src === normalUrl) break;
-        else {
-          errorUrls.push(urls[i].src)
-        }
-      }
-      console.log("errorUrls:", errorUrls);
-      (new Image()).src=`http://localhost:3000/error?errorUrls=${errorUrls}`
-    }, 1000)
+    // setTimeout(function() {
+    //   console.log("src1:", video.currentSrc) // http://localhost:3000/test11.mp4
+    //   var normalUrl = video.currentSrc
+    //   const urls = document.getElementsByTagName("source")
+    //   const len = urls.length
+    //   var errorUrls = []
+    //   console.log("sources:", urls)
+    //   for(let i =0; i< len; i++) {
+    //     console.log("item:", urls[i])
+    //     if(urls[i].src === normalUrl) break;
+    //     else {
+    //       errorUrls.push(urls[i].src)
+    //     }
+    //   }
+    //   console.log("errorUrls:", errorUrls);
+    //   (new Image()).src=`http://localhost:3000/error?errorUrls=${errorUrls}`
+    // }, 1000)
     
   </script>
 </body>

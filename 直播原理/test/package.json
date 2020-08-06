@@ -9,6 +9,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "http": "0.0.1-security",
+    "koa": "^2.13.0",
+    "koa-router": "^9.1.0"
   }
 }
