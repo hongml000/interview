@@ -87,4 +87,37 @@ var name = 'World!';
         console.log('Goodbye ' + name);
     } else {
         console.log('Hello ' + name);
-} })();
+} })(); // Goodbye Jack
+
+// 判断一个数组是否存在某个元素
+function hasItem(arr, item) {
+  if(typeof item !== 'object' && typeof item !== 'function') {
+    return arr.indexOf(item) !== -1
+   }else {
+    for(let i in arr) {
+      if(JSON.stringify(arr[i]) === JSON.stringify(item)){
+        return true;
+      }else {
+        continue
+      }
+    }
+    return false;
+   }
+}
+console.log(hasItem([1, [1,2,'3'], ['aa']], [1,2,'3',4]))
+function unique(arr) {
+  let res = []
+  for(let i in arr) {
+    if(hasItem(res, arr[i])) {
+      continue
+    }else {
+      res.push(arr[i])
+    }
+  }
+  return res;
+}
+
+const res = unique([[1,2],1,['aa'], [3,4], [1,2]])
+console.log("res:", res)
+
+
